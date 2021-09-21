@@ -5,20 +5,24 @@ class TapInteractive extends StatefulWidget {
   final Duration onTapUpDuration;
   final Duration onTapDownDuration;
   final Curve curve;
+  final Curve reverseCurve;
   final double minmumScale;
   final double maximumScale;
   final void Function()? onTap;
   final void Function()? onTapDown;
   final void Function()? onTapUp;
+  final AnimatedWidget Function(Animation animation, Widget child)? builder;
   const TapInteractive(
       {Key? key,
       required this.child,
-      this.onTapUpDuration = const Duration(milliseconds: 150),
-      this.onTapDownDuration = const Duration(milliseconds: 150),
+      this.onTapUpDuration = const Duration(milliseconds: 300),
+      this.onTapDownDuration = const Duration(milliseconds: 100),
       this.curve = Curves.easeInOutBack,
+      this.reverseCurve = Curves.elasticIn,
       this.onTap,
       this.onTapDown,
       this.onTapUp,
+      this.builder,
       this.minmumScale = 0.9,
       this.maximumScale = 1.0})
       : super(key: key);
@@ -31,6 +35,7 @@ class _TapInteractiveState extends State<TapInteractive>
     with SingleTickerProviderStateMixin {
   late final Animation<double> _animation;
   late final AnimationController _controller;
+  late final AnimatedWidget output;
   @override
   void initState() {
     _controller = AnimationController(
@@ -41,8 +46,20 @@ class _TapInteractiveState extends State<TapInteractive>
         reverseDuration: widget.onTapDownDuration);
     _animation =
         Tween<double>(begin: widget.minmumScale, end: widget.maximumScale)
-            .animate(CurvedAnimation(parent: _controller, curve: widget.curve));
+            .animate(CurvedAnimation(
+                parent: _controller,
+                curve: widget.curve,
+                reverseCurve: widget.reverseCurve));
     _controller.forward();
+    if (widget.builder != null) {
+      output = widget.builder!(_animation, widget.child);
+    } else {
+      output = ScaleTransition(
+        scale: _animation,
+        child: widget.child,
+      );
+    }
+
     super.initState();
   }
 
@@ -64,9 +81,6 @@ class _TapInteractiveState extends State<TapInteractive>
           (widget.onTapUp ?? () {})();
         },
         onTap: widget.onTap,
-        child: ScaleTransition(
-          scale: _animation,
-          child: widget.child,
-        ));
+        child: output);
   }
 }
