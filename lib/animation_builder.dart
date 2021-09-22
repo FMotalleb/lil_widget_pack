@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class BuildWithAnimationOf<T> extends StatefulWidget {
