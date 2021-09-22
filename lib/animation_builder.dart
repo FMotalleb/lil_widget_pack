@@ -23,22 +23,16 @@ class BuildWithAnimationOf<T> extends StatefulWidget {
 }
 
 class _BuildWithAnimationOfState<T> extends State<BuildWithAnimationOf<T>> {
-  late Timer timer;
-  void renderPhase() {
-    if (mounted) setState(() {});
-    timer = Timer(const Duration(milliseconds: 20), renderPhase);
-  }
-
   @override
   void initState() {
-    timer = Timer(const Duration(milliseconds: 20), renderPhase);
-
+    widget.animation.addListener(() {
+      if (mounted) setState(() {});
+    });
     super.initState();
   }
 
   @override
   void dispose() {
-    timer.cancel();
     super.dispose();
   }
 
