@@ -32,11 +32,6 @@ class _BuildWithAnimationOfState<T> extends State<BuildWithAnimationOf<T>> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return widget.builder(context, widget.animation.value, widget.child);
   }
