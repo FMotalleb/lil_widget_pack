@@ -18,7 +18,6 @@ class BuildWithAnimationOf<T> extends AnimatedWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return builder(context, animation.value, child);
   }
 }
