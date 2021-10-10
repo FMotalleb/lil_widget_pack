@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BuildWithAnimationOf<T> extends AnimatedWidget {
-  final Animation<T> animation;
+  final Listenable<T> animation;
   final Widget? child;
 
   ///Build Child widget with params of
