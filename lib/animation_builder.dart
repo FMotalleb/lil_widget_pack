@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BuildWithAnimationOf<T> extends StatefulWidget {
+class BuildWithAnimationOf<T> extends AnimatedWidget {
   final Animation<T> animation;
   final Widget? child;
 
@@ -14,23 +14,10 @@ class BuildWithAnimationOf<T> extends StatefulWidget {
   final Widget Function(BuildContext, T, Widget?) builder;
   const BuildWithAnimationOf(
       {Key? key, required this.animation, required this.builder, this.child})
-      : super(key: key);
-
-  @override
-  _BuildWithAnimationOfState<T> createState() => _BuildWithAnimationOfState();
-}
-
-class _BuildWithAnimationOfState<T> extends State<BuildWithAnimationOf<T>> {
-  @override
-  void initState() {
-    widget.animation.addListener(() {
-      if (mounted) setState(() {});
-    });
-    super.initState();
-  }
+      : super(key: key, listenable: animation);
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, widget.animation.value, widget.child);
+    return builder(context, animation.value, child);
   }
 }
