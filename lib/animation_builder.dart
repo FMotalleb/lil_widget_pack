@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BuildWithAnimationOf<T> extends AnimatedWidget {
   ///Animation value
-  final Listenable<T> animation;
+  final Animation<T> animation;
 
   ///child widget to prevent constant widgets rebuild for no reason
   final Widget? child;
