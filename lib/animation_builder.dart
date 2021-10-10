@@ -4,7 +4,7 @@ class BuildWithAnimationOf<T> extends AnimatedWidget {
   ///Animation value
   final Listenable<T> animation;
 
-  ///Child widget to prevent constant widgets rebuild for no reason
+  ///child widget to prevent constant widgets rebuild for no reason
   final Widget? child;
 
   ///Build Child widget with params of
