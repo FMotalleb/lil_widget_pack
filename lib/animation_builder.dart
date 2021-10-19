@@ -5,7 +5,7 @@ class BuildWithAnimationOf<T, C> extends AnimatedWidget {
   final Animation<T> animation;
 
   ///child widget to prevent constant widgets rebuild for no reason
-  @Deprecated('use data instead')
+  @Deprecated('use data instead this will be removed on 2022 first patch')
   final C? child;
 
   ///Data passing to the child can be any type
@@ -27,12 +27,13 @@ class BuildWithAnimationOf<T, C> extends AnimatedWidget {
       {Key? key,
       required this.animation,
       required this.builder,
-      this.data = null,
-      this.child = null})
-      : super(key: key, listenable: animation);
+      C? data,
+      this.child})
+      : data = data ?? child,
+        super(key: key, listenable: animation);
 
   @override
   Widget build(BuildContext context) {
-    return builder(context, animation.value, data ?? child);
+    return builder(context, animation.value, data);
   }
 }
