@@ -5,7 +5,12 @@ class BuildWithAnimationOf<T, C> extends AnimatedWidget {
   final Animation<T> animation;
 
   ///child widget to prevent constant widgets rebuild for no reason
+  @Deprecated('use data instead')
   final C? child;
+
+  ///Data passing to the child can be any type
+  ///
+  ///* Data will not update after construction phase
   final C? data;
 
   ///Build Child widget with params of
