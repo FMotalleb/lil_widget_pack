@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lil_widget_pack/animation_builder.dart';
 
 class TapInteractive extends StatefulWidget {
   final Widget child;
@@ -15,7 +16,7 @@ class TapInteractive extends StatefulWidget {
   const TapInteractive(
       {Key? key,
       required this.child,
-      this.onTapUpDuration = const Duration(milliseconds: 300),
+      this.onTapUpDuration = const Duration(milliseconds: 150),
       this.onTapDownDuration = const Duration(milliseconds: 100),
       this.curve = Curves.easeInOutBack,
       this.reverseCurve = Curves.elasticIn,
@@ -32,7 +33,7 @@ class TapInteractive extends StatefulWidget {
 }
 
 class _TapInteractiveState extends State<TapInteractive>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final Animation<double> _animation;
   late final AnimationController _controller;
   late final AnimatedWidget output;
@@ -50,13 +51,19 @@ class _TapInteractiveState extends State<TapInteractive>
                 parent: _controller,
                 curve: widget.curve,
                 reverseCurve: widget.reverseCurve));
-    _controller.forward();
+    _controller.value = 1;
     if (widget.builder != null) {
       output = widget.builder!(_animation, widget.child);
     } else {
-      output = ScaleTransition(
-        scale: _animation,
+      output = BuildWithAnimationOf<double, Widget>(
+        animation: _animation,
         child: widget.child,
+        builder: (_, value, child) {
+          return Transform.scale(
+            scale: value,
+            child: child,
+          );
+        },
       );
     }
 
@@ -71,16 +78,15 @@ class _TapInteractiveState extends State<TapInteractive>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTapDown: (v) {
+    return Listener(
+        onPointerDown: (v) {
           _controller.reverse();
           (widget.onTapDown ?? () {})();
         },
-        onTapUp: (v) {
+        onPointerUp: (v) {
           _controller.forward();
           (widget.onTapUp ?? () {})();
         },
-        onTap: widget.onTap,
-        child: output);
+        child: GestureDetector(onTap: (widget.onTap ?? () {}), child: output));
   }
 }
