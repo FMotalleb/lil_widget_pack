@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hemend/ui_related/state_extensions/safe_state.dart';
 
 class CountDownTimer {
   String get hours => alterIntToStr(_duration.inHours % 24, ssz);
@@ -11,11 +12,11 @@ class CountDownTimer {
   Duration get asDuration => _duration;
   final void Function()? onTick;
   Future<void> startTimer() async {
-    do {
+    while (!_duration.isNegative) {
       _duration = Duration(seconds: (_duration.inSeconds - 1));
       (onTick ?? () {})();
       await Future.delayed(const Duration(seconds: 1));
-    } while (!_duration.isNegative);
+    }
   }
 
   CountDownTimer(Duration duration,
@@ -67,7 +68,7 @@ class TimerViewMaster extends StatefulWidget {
       return fromDate != fromDuration;
     }());
     if (fromDate) {
-      endTime = finalDate!;
+      endTime = finalDate;
     } else {
       endTime = DateTime.now().add(duration!);
     }
@@ -79,7 +80,7 @@ class TimerViewMaster extends StatefulWidget {
   _TimerState createState() => _TimerState();
 }
 
-class _TimerState extends State<TimerViewMaster> {
+class _TimerState extends SafeState<TimerViewMaster> {
   late final time =
       CountDownTimer((widget.endTime).difference(DateTime.now()), onTick: () {
     setState(() {});
