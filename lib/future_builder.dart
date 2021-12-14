@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hemend/ui_related/state_extensions/safe_state.dart';
 
 class BuildInFuture<T> extends StatefulWidget {
   ///async object that your widget needs its value
@@ -23,7 +24,7 @@ class BuildInFuture<T> extends StatefulWidget {
   _BuildInFutureState createState() => _BuildInFutureState<T>();
 }
 
-class _BuildInFutureState<T> extends State<BuildInFuture<T>> {
+class _BuildInFutureState<T> extends SafeState<BuildInFuture<T>> {
   bool inited = false;
   T? data;
   late Widget child;
