@@ -3,7 +3,11 @@ import 'package:lil_widget_pack/animation_builder.dart';
 
 class TapInteractive extends StatefulWidget {
   final Widget child;
+
+  ///duration of animation of on tapDown
   final Duration onTapUpDuration;
+
+  ///duration of animation of on tapUp
   final Duration onTapDownDuration;
   final Curve curve;
   final Curve reverseCurve;
