@@ -16,7 +16,8 @@ class TapInteractive extends StatefulWidget {
   final void Function()? onTap;
   final void Function()? onTapDown;
   final void Function()? onTapUp;
-  final AnimatedWidget Function(Animation animation, Widget child)? builder;
+  final AnimatedWidget Function(Animation<double> animation, Widget child)?
+      builder;
   const TapInteractive(
       {Key? key,
       required this.child,
